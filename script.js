@@ -1,4 +1,3 @@
-// === DATASET 30 NGUYÊN TỐ ĐẦU TIÊN ===
 const elements = [
   { number: 1, symbol: "H", name: "Hydrogen", mass: "1.008", type:"Phi kim", desc:"Nhẹ nhất", x:1, y:1, color:"#FFFFFF" },
   { number: 2, symbol: "He", name: "Helium", mass: "4.0026", type:"Khí hiếm", desc:"Khí trơ", x:18, y:1, color:"#D9FFFF" },
@@ -32,7 +31,6 @@ const elements = [
   { number:30, symbol:"Zn", name:"Zinc", mass:"65.38", type:"Kim loại chuyển tiếp", desc:"Kẽm", x:12, y:4, color:"#7D80B0" }
 ];
 
-// === LOGIC BẢNG + POPUP + SEARCH ===
 const table = document.getElementById("periodic-table");
 
 function renderTable(list = elements) {
@@ -55,43 +53,33 @@ function renderTable(list = elements) {
 
 renderTable();
 
-// === SEARCH (nếu muốn thêm input#search trong HTML) ===
 const searchInput = document.getElementById("search");
-if(searchInput){
-    searchInput.addEventListener("input", e => {
-        const key = e.target.value.toLowerCase();
-        const list = elements.filter(el =>
-            el.name.toLowerCase().includes(key) ||
-            el.symbol.toLowerCase().includes(key)
-        );
-        renderTable(list);
-    });
-}
+searchInput.addEventListener("input", e => {
+    const key = e.target.value.toLowerCase();
+    const list = elements.filter(el =>
+        el.name.toLowerCase().includes(key) ||
+        el.symbol.toLowerCase().includes(key)
+    );
+    renderTable(list);
+});
 
-// === POPUP ===
 const popup = document.getElementById("popup");
-document.getElementById("close-btn").onclick = () => popup.style.display = "none";
+const closeBtn = document.getElementById("close-btn");
+closeBtn.onclick = () => popup.classList.add("popup-hidden");
 
 function openPopup(e) {
-    popup.style.display = "flex";
-    popup.style.flexDirection = "column";
+    popup.classList.remove("popup-hidden");
 
-    popup.innerHTML = `
-        <button id="close-btn" title="Đóng">×</button>
-        <h2>${e.name} (${e.symbol})</h2>
-        <p><b>Số hiệu nguyên tử:</b> ${e.number}</p>
-        <p><b>Nguyên tử khối:</b> ${e.mass}</p>
-        <p><b>Loại:</b> ${e.type}</p>
-        <p>${e.desc}</p>
-        <div id="viewer3d" style="width:350px;height:350px;margin:auto;"></div>
-    `;
-
-    document.getElementById("close-btn").onclick = () => popup.style.display = "none";
+    document.getElementById("eName").innerText = e.name;
+    document.getElementById("eSymbol").innerText = e.symbol;
+    document.getElementById("eNumber").innerText = e.number;
+    document.getElementById("eMass").innerText = e.mass;
+    document.getElementById("eGroup").innerText = e.type;
+    document.getElementById("eDesc").innerText = e.desc;
 
     atom3D(e.number);
 }
 
-// === Three.js 3D Atom ===
 let scene, camera, renderer;
 
 function atom3D(Z) {
@@ -106,35 +94,33 @@ function atom3D(Z) {
     renderer.setSize(350, 350);
     container.appendChild(renderer.domElement);
 
-    // Nucleus
-    const nuc = new THREE.Mesh(
+    const nucleus = new THREE.Mesh(
         new THREE.SphereGeometry(0.6, 32, 32),
         new THREE.MeshStandardMaterial({ color: 0xff3333 })
     );
-    scene.add(nuc);
+    scene.add(nucleus);
 
-    // Electrons
     const electrons = [];
-    const eCount = Math.min(Z, 16); // tránh quá nặng
-    for (let i = 0; i < eCount; i++) {
-        const el = new THREE.Mesh(
+    const eCount = Math.min(Z, 16);
+    for(let i=0; i<eCount; i++){
+        const electron = new THREE.Mesh(
             new THREE.SphereGeometry(0.12, 16, 16),
             new THREE.MeshStandardMaterial({ color: 0x55aaff })
         );
-        el.orbit = 1.2 + (i % 4) * 0.35;
-        el.angle = Math.random() * Math.PI * 2;
-        electrons.push(el);
-        scene.add(el);
+        electron.orbit = 1.2 + (i % 4) * 0.35;
+        electron.angle = Math.random() * Math.PI * 2;
+        electrons.push(electron);
+        scene.add(electron);
     }
 
     scene.add(new THREE.PointLight(0xffffff, 2));
 
-    function animate() {
+    function animate(){
         requestAnimationFrame(animate);
-        electrons.forEach(el => {
-            el.angle += 0.02;
-            el.position.x = Math.cos(el.angle) * el.orbit;
-            el.position.z = Math.sin(el.angle) * el.orbit;
+        electrons.forEach(e => {
+            e.angle += 0.02;
+            e.position.x = Math.cos(e.angle) * e.orbit;
+            e.position.z = Math.sin(e.angle) * e.orbit;
         });
         renderer.render(scene, camera);
     }
