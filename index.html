@@ -1,1 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bảng Tuần Hoàn Hóa Học 3D</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<h1>BẢNG TUẦN HOÀN – 3D ELEMENT VIEWER</h1>
+
+<div class="periodic-table" id="table"></div>
+
+<!-- Popup -->
+<div id="popup">
+    <div class="popup-content">
+        <div class="popup-info">
+            <span id="closeBtn">✖</span>
+            <h2 id="eName"></h2>
+            <p><b>Kí hiệu:</b> <span id="eSymbol"></span></p>
+            <p><b>Số nguyên tử:</b> <span id="eNumber"></span></p>
+            <p><b>Nguyên tử khối:</b> <span id="eMass"></span></p>
+            <p id="eDesc"></p>
+        </div>
+
+        <div id="viewer3d"></div>
+    </div>
+</div>
+
+<script src="three.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
