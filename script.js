@@ -1,51 +1,38 @@
-/* ===== RENDER TABLE ===== */
-const table = document.getElementById("table");
+const table = document.getElementById("periodic");
 
-function renderTable() {
+function renderTable(list = elements) {
     table.innerHTML = "";
-    elements.forEach(e => {
-        const box = document.createElement("div");
-        box.className = "element";
-        box.style.gridColumn = e.x;
-        box.style.gridRow = e.y;
+    list.forEach(e => {
+        const el = document.createElement("div");
+        el.className = "element";
+        el.style.gridColumn = e.x;
+        el.style.gridRow = e.y;
+        el.style.background = e.color;
 
-        box.innerHTML = `
+        el.innerHTML = `
             <div class="number">${e.number}</div>
             <div class="symbol">${e.symbol}</div>
             <div class="name">${e.name}</div>
         `;
 
-        box.onclick = () => openPopup(e);
-        table.appendChild(box);
+        el.onclick = () => openPopup(e);
+        table.appendChild(el);
     });
 }
 
 renderTable();
 
-/* ==== SEARCH ==== */
+/* SEARCH */
 document.getElementById("search").addEventListener("input", e => {
     const key = e.target.value.toLowerCase();
-    const filtered = elements.filter(el =>
+    const list = elements.filter(el =>
         el.name.toLowerCase().includes(key) ||
         el.symbol.toLowerCase().includes(key)
     );
-    table.innerHTML = "";
-    filtered.forEach(e => {
-        const box = document.createElement("div");
-        box.className = "element";
-        box.style.gridColumn = e.x;
-        box.style.gridRow = e.y;
-        box.innerHTML = `
-            <div class="number">${e.number}</div>
-            <div class="symbol">${e.symbol}</div>
-            <div class="name">${e.name}</div>
-        `;
-        box.onclick = () => openPopup(e);
-        table.appendChild(box);
-    });
+    renderTable(list);
 });
 
-/* ==== POPUP ==== */
+/* POPUP */
 const popup = document.getElementById("popup");
 document.getElementById("closeBtn").onclick = () => popup.style.display = "none";
 
@@ -56,17 +43,16 @@ function openPopup(e) {
     document.getElementById("eSymbol").innerText = e.symbol;
     document.getElementById("eNumber").innerText = e.number;
     document.getElementById("eMass").innerText = e.mass;
-    document.getElementById("eType").innerText = e.type;
+    document.getElementById("eGroup").innerText = e.type;
     document.getElementById("eDesc").innerText = e.desc;
 
-    render3D(e.number);
+    atom3D(e.number);
 }
 
-/* ==== ATOM 3D MODEL ==== */
-let scene, camera, renderer, nucleus;
-let electrons = [];
+/* 3D ATOM (Three.js) */
+let scene, camera, renderer;
 
-function render3D(Z) {
+function atom3D(Z) {
     const container = document.getElementById("viewer3d");
     container.innerHTML = "";
 
@@ -75,42 +61,44 @@ function render3D(Z) {
     camera.position.z = 5;
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(380, 380);
+    renderer.setSize(350, 350);
     container.appendChild(renderer.domElement);
 
-    const nucleusMat = new THREE.MeshStandardMaterial({ color: 0xff5555 });
-    const nucleusGeo = new THREE.SphereGeometry(0.6, 32, 32);
-    nucleus = new THREE.Mesh(nucleusGeo, nucleusMat);
-    scene.add(nucleus);
+    // Nucleus
+    const nuc = new THREE.Mesh(
+        new THREE.SphereGeometry(0.6, 32, 32),
+        new THREE.MeshStandardMaterial({ color: 0xff3333 })
+    );
+    scene.add(nuc);
 
-    electrons = [];
-    const electronCount = Math.min(Z, 20); // tránh lag
+    // Electrons
+    const electrons = [];
+    const eCount = Math.min(Z, 16); // tránh quá nặng
 
-    for (let i = 0; i < electronCount; i++) {
-        const eGeo = new THREE.SphereGeometry(0.15, 16, 16);
-        const eMat = new THREE.MeshStandardMaterial({ color: 0x55aaff });
-        const el = new THREE.Mesh(eGeo, eMat);
-
-        el.orbitRadius = 1.2 + (i % 5) * 0.3;
-        el.angle = (i / electronCount) * Math.PI * 2;
-
+    for (let i = 0; i < eCount; i++) {
+        const el = new THREE.Mesh(
+            new THREE.SphereGeometry(0.12, 16, 16),
+            new THREE.MeshStandardMaterial({ color: 0x55aaff })
+        );
+        el.orbit = 1.2 + (i % 4) * 0.35;
+        el.angle = Math.random() * Math.PI * 2;
         electrons.push(el);
         scene.add(el);
     }
 
-    const light = new THREE.PointLight(0xffffff, 2);
-    scene.add(light);
+    scene.add(new THREE.PointLight(0xffffff, 2));
 
     function animate() {
         requestAnimationFrame(animate);
 
-        electrons.forEach((el, i) => {
-            el.angle += 0.02 + i * 0.001;
-            el.position.x = Math.cos(el.angle) * el.orbitRadius;
-            el.position.z = Math.sin(el.angle) * el.orbitRadius;
+        electrons.forEach(el => {
+            el.angle += 0.02;
+            el.position.x = Math.cos(el.angle) * el.orbit;
+            el.position.z = Math.sin(el.angle) * el.orbit;
         });
 
         renderer.render(scene, camera);
     }
+
     animate();
 }
