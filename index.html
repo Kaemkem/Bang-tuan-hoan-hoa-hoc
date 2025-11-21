@@ -1,31 +1,30 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bảng Tuần Hoàn Hóa Học</title>
-    <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-    <h1>Bảng Tuần Hoàn Hóa Học</h1>
-    <input type="text" id="search" placeholder="Tìm nguyên tố..." />
+<h1>Bảng Tuần Hoàn Hóa Học</h1>
+<input id="search" type="text" placeholder="Tìm nguyên tố...">
 
-    <div id="periodic-table"></div>
+<div id="periodic"></div>
 
-    <div id="popup" class="popup-hidden">
-        <div class="popup-content">
-            <button id="close-btn" title="Đóng popup">×</button>
-            <h2 id="eName"></h2>
-            <p><b>Ký hiệu:</b> <span id="eSymbol"></span></p>
-            <p><b>Số hiệu nguyên tử:</b> <span id="eNumber"></span></p>
-            <p><b>Nguyên tử khối:</b> <span id="eMass"></span></p>
-            <p><b>Loại nguyên tố:</b> <span id="eGroup"></span></p>
-            <p id="eDesc"></p>
-            <div id="viewer3d"></div>
-        </div>
-    </div>
+<!-- Lanthanide và Actinide tách ra -->
+<h3>Lanthanides & Actinides</h3>
+<div id="lanthAct"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+<div id="legend">
+  <div class="legend-item"><span class="legend-color" style="background:#87CEFA;"></span>Kim loại</div>
+  <div class="legend-item"><span class="legend-color" style="background:#FFD700;"></span>Kim loại chuyển tiếp</div>
+  <div class="legend-item"><span class="legend-color" style="background:#FFB6C1;"></span>Phi kim</div>
+  <div class="legend-item"><span class="legend-color" style="background:#90EE90;"></span>Khí hiếm</div>
+  <div class="legend-item"><span class="legend-color" style="background:#FFB6C1;"></span>Halogen</div>
+</div>
+
+<div id="popup">
+  <button class="close-btn">&times;</button>
+  <h2 id="popup-title">Thông tin nguyên tố</h2>
+  <div id="popup-content">
+    <div><strong>Ký hiệu:</strong> <span id="eSymbol"></span></div>
+    <div><strong>Số hiệu nguyên tử:</strong> <span id="eNumber"></span></div>
+    <div><strong>Khối lượng:</strong> <span id="eMass"></span></div>
+    <div><strong>Loại:</strong> <span id="eGroup"></span></div>
+    <div><strong>Nhóm:</strong> <span id="eGroupNum"></span></div>
+    <div><strong>Chu kì:</strong> <span id="ePeriod"></span></div>
+  </div>
+  <canvas id="viewer2d" width="360" height="360"></canvas>
+</div>
