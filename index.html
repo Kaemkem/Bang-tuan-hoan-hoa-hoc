@@ -2,24 +2,29 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Bảng Tuần Hoàn Hóa Học 3D</title>
+    <title>Bảng Tuần Hoàn 3D</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>BẢNG TUẦN HOÀN – 3D ELEMENT VIEWER</h1>
+<h1 class="title">BẢNG TUẦN HOÀN 3D</h1>
+
+<div class="search-bar">
+    <input class="search-input" id="search" placeholder="Tìm nguyên tố...">
+</div>
 
 <div class="periodic-table" id="table"></div>
 
-<!-- Popup -->
+<!-- POPUP -->
 <div id="popup">
     <div class="popup-content">
         <div class="popup-info">
-            <span id="closeBtn">✖</span>
+            <span class="close-btn" id="closeBtn">✖</span>
             <h2 id="eName"></h2>
             <p><b>Kí hiệu:</b> <span id="eSymbol"></span></p>
             <p><b>Số nguyên tử:</b> <span id="eNumber"></span></p>
             <p><b>Nguyên tử khối:</b> <span id="eMass"></span></p>
+            <p><b>Phân loại:</b> <span id="eType"></span></p>
             <p id="eDesc"></p>
         </div>
 
@@ -29,5 +34,6 @@
 
 <script src="three.min.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
