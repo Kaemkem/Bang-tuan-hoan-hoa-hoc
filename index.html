@@ -4,23 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Bảng Tuần Hoàn Hóa Học</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
     <h1>Bảng Tuần Hoàn Hóa Học</h1>
+    <input type="text" id="search" placeholder="Tìm nguyên tố..." />
 
     <div id="periodic-table"></div>
 
-    <div id="popup">
-        <button id="close-btn" title="Đóng">×</button>
-        <h2 id="popup-title"></h2>
-        <div id="popup-info"></div>
-        <canvas id="atom-3d"></canvas>
+    <div id="popup" class="popup-hidden">
+        <div class="popup-content">
+            <button id="close-btn" title="Đóng popup">×</button>
+            <h2 id="eName"></h2>
+            <p><b>Ký hiệu:</b> <span id="eSymbol"></span></p>
+            <p><b>Số hiệu nguyên tử:</b> <span id="eNumber"></span></p>
+            <p><b>Nguyên tử khối:</b> <span id="eMass"></span></p>
+            <p><b>Loại nguyên tố:</b> <span id="eGroup"></span></p>
+            <p id="eDesc"></p>
+            <div id="viewer3d"></div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
     <script src="script.js"></script>
-
 </body>
 </html>
