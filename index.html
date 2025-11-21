@@ -2,33 +2,32 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Bảng Tuần Hoàn 3D</title>
+    <title>Bảng Tuần Hoàn Tương Tác 3D</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1 class="title">BẢNG TUẦN HOÀN 3D</h1>
+<h1 class="title">BẢNG TUẦN HOÀN HÓA HỌC – PHIÊN BẢN TƯƠNG TÁC</h1>
 
 <div class="search-bar">
-    <input class="search-input" id="search" placeholder="Tìm nguyên tố...">
+    <input id="search" class="search-input" placeholder="Tìm theo tên hoặc kí hiệu...">
 </div>
 
-<div class="periodic-table" id="table"></div>
+<div id="periodic" class="periodic-table"></div>
 
 <!-- POPUP -->
 <div id="popup">
-    <div class="popup-content">
-        <div class="popup-info">
-            <span class="close-btn" id="closeBtn">✖</span>
+    <div class="popup-box">
+        <span id="closeBtn" class="close">✖</span>
+        <div class="info">
             <h2 id="eName"></h2>
             <p><b>Kí hiệu:</b> <span id="eSymbol"></span></p>
             <p><b>Số nguyên tử:</b> <span id="eNumber"></span></p>
             <p><b>Nguyên tử khối:</b> <span id="eMass"></span></p>
-            <p><b>Phân loại:</b> <span id="eType"></span></p>
+            <p><b>Nhóm nguyên tố:</b> <span id="eGroup"></span></p>
             <p id="eDesc"></p>
         </div>
-
-        <div id="viewer3d"></div>
+        <div id="viewer3d" class="viewer3d"></div>
     </div>
 </div>
 
